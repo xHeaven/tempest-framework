@@ -95,10 +95,7 @@ trait PublishesFiles
             if ($callback !== null) {
                 $callback($source, $destination);
             }
-
-            $this->console->success(sprintf('File successfully created at <em>%s</em>".', $destination));
-        } catch (FileGenerationAbortedException $exception) {
-            $this->console->info($exception->getMessage());
+        } catch (FileGenerationAbortedException) {
         } catch (Throwable $throwable) {
             if ($throwable instanceof ConsoleException) {
                 throw $throwable;
@@ -167,7 +164,7 @@ trait PublishesFiles
         $className = NamespaceHelper::toClassName($suggestedPath);
 
         return $this->console->ask(
-            question: sprintf('Where do you want to save the file "%s"?', $className),
+            question: sprintf('Where do you want to save the file <em>%s</em>?', $className),
             default: $suggestedPath,
             validation: [new NotEmpty(), new EndsWith('.php')],
         );
@@ -186,6 +183,8 @@ trait PublishesFiles
 
         return $this->console->confirm(
             question: sprintf('The file <em>%s</em> already exists. Do you want to override it?', $targetPath),
+            yes: 'Override',
+            no: 'Cancel',
         );
     }
 }

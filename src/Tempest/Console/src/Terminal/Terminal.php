@@ -98,9 +98,9 @@ final class Terminal
         foreach ($rendered as $content) {
             $footerLinesForContent = [];
 
-            if ($validationErrors) {
+            if (! $component->getState()->isFinished() && $validationErrors) {
                 $content .= PHP_EOL . arr($validationErrors)
-                    ->map(fn (string $error) => "   <style=\"fg-yellow\">{$error}</style>")
+                    ->map(fn (string $error) => "  <style=\"fg-yellow\">{$error}</style>")
                     ->implode(PHP_EOL)
                     ->append(PHP_EOL)
                     ->toString();
@@ -110,7 +110,7 @@ final class Terminal
                 $footerLinesForContent[] = $footer;
             }
 
-            if ($footerLinesForContent !== []) {
+            if (! $component->getState()->isFinished() && $footerLinesForContent !== []) {
                 $content .= PHP_EOL . implode(PHP_EOL, $footerLinesForContent) . PHP_EOL;
             }
 
