@@ -9,6 +9,7 @@ use Closure;
 use Stringable;
 use Tempest\Highlight\Language;
 use Tempest\Support\ArrayHelper;
+use UnitEnum;
 
 interface Console
 {
@@ -45,7 +46,7 @@ interface Console
         ?string $placeholder = null,
         ?string $hint = null,
         array $validation = [],
-    ): null|int|string|Stringable|array;
+    ): null|int|string|Stringable|UnitEnum|array;
 
     public function confirm(string $question, bool $default = false, ?string $yes = null, ?string $no = null): bool;
 
