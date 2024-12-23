@@ -184,9 +184,9 @@ final class GenericConsole implements Console
 
     public function component(InteractiveConsoleComponent $component, array $validation = []): mixed
     {
-        // if ($this->componentRenderer !== null && $this->supportsPrompting()) {
-        //     return $this->componentRenderer->render($this, $component, $validation);
-        // }
+        if ($this->componentRenderer !== null && $this->supportsPrompting()) {
+            return $this->componentRenderer->render($this, $component, $validation);
+        }
 
         if ($component instanceof HasStaticComponent) {
             return $component->staticComponent->render($this);
