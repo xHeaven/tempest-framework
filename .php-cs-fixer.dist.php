@@ -135,5 +135,7 @@ return (new PhpCsFixer\Config())
         'php_unit_test_case_static_method_calls' => [
             'call_type' => 'this',
         ],
+		'line_ending' => true,
+		'string_line_ending' => true,
     ])
     ->setFinder($finder);
