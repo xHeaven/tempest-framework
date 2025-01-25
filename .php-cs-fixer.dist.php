@@ -10,8 +10,16 @@ $finder = Finder::create()
     ->in([
         __DIR__ . '/src',
         __DIR__ . '/tests',
+		__DIR__ . '/bin',
     ])
-    ->name('*.php')
+    ->name([
+		'*.php',
+		'build-changed-packages',
+		'get-packages',
+		'get-packages-with-tests',
+		'release',
+		'validate-packages',
+	])
     ->notName('*.cache.php')
     ->notPath([ // phpcs doesn't yet support property hooks in interfaces and asymmetric visibility
         'Fixtures/Discovery/HiddenDatabaseMigration.php',
