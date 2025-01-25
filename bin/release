@@ -19,8 +19,8 @@ function ensureAccess(string $remote, string $branch): void
         throw new Exception('Repository must be in a clean state to release.');
     }
 
-    if (! str_starts_with(shell_exec('git rev-parse --abbrev-ref --symbolic-full-name @{u}'), "$remote/$branch")) {
-        throw new Exception("You must be on the $remote/$branch branch to release.");
+    if (! str_starts_with(shell_exec('git rev-parse --abbrev-ref --symbolic-full-name @{u}'), "{$remote}/{$branch}")) {
+        throw new Exception("You must be on the {$remote}/{$branch} branch to release.");
     }
 }
 
@@ -83,7 +83,7 @@ function releaseTag(string $tag): void
             continue;
         }
 
-        throw new Exception("Pushing of git tag failed.");
+        throw new Exception('Pushing of git tag failed.');
     }
 }
 
@@ -101,11 +101,11 @@ try {
     $console = get(Console::class);
 
     $console->writeln();
-    $console->info(sprintf("Current version is <u><strong>%s</strong></u>", $current = getCurrentVersion()));
+    $console->info(sprintf('Current version is <u><strong>%s</strong></u>', $current = getCurrentVersion()));
 
     $console->writeln();
     $new = $console->ask(
-        question: "What should the new version be?",
+        question: 'What should the new version be?',
         options: arr(suggestNextVersions($current))
             ->map(fn (string $version, string $type) => (string) str($type)->replace('_', ' ')->append(': ', $version))
             ->values()
@@ -131,6 +131,5 @@ try {
     $console->success("Released {$tag}");
 
     exit;
-
 } catch (InterruptException) {
 }

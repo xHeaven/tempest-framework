@@ -1,11 +1,13 @@
 #!/usr/bin/env php
 <?php
 
+declare(strict_types=1);
+
 define('LICENSE_TEMPLATE', file_get_contents(__DIR__ . '/../LICENCE.md'));
 
 $packages = json_decode(
     json: exec(__DIR__  . '/get-packages'),
-    associative: true
+    associative: true,
 );
 
 function checkPackageFile(array $package, string $file): void
@@ -14,7 +16,7 @@ function checkPackageFile(array $package, string $file): void
 
     if (! file_exists($filePath)) {
         throw new UnexpectedValueException(
-            sprintf('Package [tempest/%s] is missing the expected file [%s].', $package['name'], $file)
+            sprintf('Package [tempest/%s] is missing the expected file [%s].', $package['name'], $file),
         );
     }
 }
@@ -27,19 +29,19 @@ function checkPackageLicense(array $package): void
 
     if (! isset($composer['license']) || $composer['license'] !== 'MIT') {
         throw new UnexpectedValueException(
-            sprintf('Package [tempest/%s] is missing the MIT from it\'s composer file.', $package['name'])
+            sprintf('Package [tempest/%s] is missing the MIT from it\'s composer file.', $package['name']),
         );
     }
 
     if (! file_exists($licenseFile)) {
         throw new UnexpectedValueException(
-            sprintf('Package [tempest/%s] is missing it\'s license.', $package['name'])
+            sprintf('Package [tempest/%s] is missing it\'s license.', $package['name']),
         );
     }
 
     if (file_get_contents($licenseFile) !== LICENSE_TEMPLATE) {
         throw new UnexpectedValueException(
-            sprintf('Package [tempest/%s] license does not match the template.', $package['name'])
+            sprintf('Package [tempest/%s] license does not match the template.', $package['name']),
         );
     }
 }

@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+declare(strict_types=1);
+
 /**
  * The following is heavily borrowed from Ecotone.
  *
@@ -18,7 +20,7 @@ function getPackageNameFromComposerFile(string $composerFile)
     $composer = json_decode(file_get_contents($composerFile), true);
 
     $name = $composer['name'] ?? throw new UnexpectedValueException(
-        'The referenced package is invalid because it is missing a name: ' . $composerFile
+        'The referenced package is invalid because it is missing a name: ' . $composerFile,
     );
 
     return str_replace('tempest/', '', $name);
@@ -34,7 +36,8 @@ function getPackageNameFromComposerFile(string $composerFile)
  *     repository: string
  * }>
  */
-function getPackages(): array {
+function getPackages(): array
+{
     $packages = [];
     $directoryIterator = new DirectoryIterator(realpath(PACKAGES_DIRECTORY));
 
@@ -55,7 +58,7 @@ function getPackages(): array {
         $name = getPackageNameFromComposerFile($file);
         $packages[] = [
             'basename' => $directory->getBasename(),
-            'directory'  => $directory->getRealPath(),
+            'directory' => $directory->getRealPath(),
             'name' => $name,
             'package' => 'tempest/' . $name,
             'organization' => 'tempestphp',

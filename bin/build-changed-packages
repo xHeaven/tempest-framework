@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+declare(strict_types=1);
+
 /**
  * Though this script attempts to simplify, it borrows heavily from Symfony's approach.
  *
@@ -11,7 +13,7 @@
 
 $tempestPackages = json_decode(
     json: exec(__DIR__  . '/get-packages'),
-    associative: true
+    associative: true,
 );
 
 $composerPackages = [
@@ -45,7 +47,7 @@ foreach ($tempestPackages as $package) {
         [
             'type' => 'composer',
             'url' => realpath(__DIR__ . '/../'),
-        ]
+        ],
     ];
 
     file_put_contents($composerPath, json_encode($composerFile, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
