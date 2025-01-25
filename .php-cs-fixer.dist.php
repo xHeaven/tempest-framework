@@ -2,19 +2,49 @@
 
 declare(strict_types=1);
 
-$finder = Symfony\Component\Finder\Finder::create()
+use PhpCsFixer\Config;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
+use Symfony\Component\Finder\Finder;
+
+$finder = Finder::create()
     ->in([
         __DIR__ . '/src',
         __DIR__ . '/tests',
     ])
     ->name('*.php')
     ->notName('*.cache.php')
-    ->notPath('Tempest/Router/src/Route.php') // phpcs doesn't yet support property hooks in interfaces
+    ->notPath([ // phpcs doesn't yet support property hooks in interfaces and asymmetric visibility
+        'Fixtures/Discovery/HiddenDatabaseMigration.php',
+        'Fixtures/Discovery/HiddenMigratableDatabaseMigration.php',
+        'Fixtures/Migrations/CreateAuthorTable.php',
+        'Fixtures/Migrations/CreateBookTable.php',
+        'Fixtures/TestInstaller.php',
+        'Integration/Database/QueryStatements/CreateUserDatabaseMigration.php',
+        'Integration/Mapper/Fixtures/ObjectFactoryADatabaseMigration.php',
+        'Integration/ORM/FooDatabaseMigration.php',
+        'Integration/ORM/Migrations/CreateATable.php',
+        'Integration/ORM/Migrations/CreateBTable.php',
+        'Integration/ORM/Migrations/CreateCTable.php',
+        'Integration/ORM/Migrations/CreateHasManyChildTable.php',
+        'Integration/ORM/Migrations/CreateHasManyParentTable.php',
+        'Integration/ORM/Migrations/CreateHasManyThroughTable.php',
+        'Tempest/Auth/src/AuthInstaller.php',
+        'Tempest/Auth/src/Install/CreatePermissionsTable.php',
+        'Tempest/Auth/src/Install/CreateUserPermissionsTable.php',
+        'Tempest/Auth/src/Install/CreateUsersTable.php',
+        'Tempest/Console/src/Installers/ConsoleInstaller.php',
+        'Tempest/Core/src/functions.php',
+        'Tempest/Database/src/Migrations/CreateMigrationsTable.php',
+        'Tempest/Framework/Installers/FrameworkInstaller.php',
+        'Tempest/Router/src/IsRequest.php',
+        'Tempest/Router/src/IsResponse.php',
+        'Tempest/Router/src/Route.php',
+    ])
     ->ignoreDotFiles(true)
     ->ignoreVCS(true);
 
-return (new PhpCsFixer\Config())
-    ->setParallelConfig(PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
+return (new Config())
+    ->setParallelConfig(ParallelConfigFactory::detect())
     ->setCacheFile('.cache/fixer/cs-fixer.cache')
     ->setRules([
         '@PSR12' => true,
@@ -25,7 +55,7 @@ return (new PhpCsFixer\Config())
         'yoda_style' => [
             'equal' => false,
             'identical' => false,
-            'less_and_greater' => false
+            'less_and_greater' => false,
         ],
         'get_class_to_class_keyword' => true,
         'cast_spaces' => true,
@@ -125,7 +155,7 @@ return (new PhpCsFixer\Config())
             'elements' => [
 //            'property' // Disabled because of PHP 8.4 aviz
                 'method',
-                'const'
+                'const',
             ],
         ],
         'php_unit_size_class' => false,
@@ -135,7 +165,7 @@ return (new PhpCsFixer\Config())
         'php_unit_test_case_static_method_calls' => [
             'call_type' => 'this',
         ],
-		'line_ending' => true,
-		'string_line_ending' => true,
+        'line_ending' => true,
+        'string_line_ending' => true,
     ])
     ->setFinder($finder);
