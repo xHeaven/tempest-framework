@@ -6,25 +6,25 @@ on:
 
 # CSFixer and Rector are temporarily disabled until they have proper PHP 8.4 support
 jobs:
- check-style:
+  check-style:
     name: Run style check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-    #  - name: Setup PHP
-    #    uses: shivammathur/setup-php@v2
-    #    with:
-    #      php-version: 8.4
-    #      coverage: none
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          coverage: none
 
-    #  - name: Install composer dependencies
-    #    uses: ramsey/composer-install@v3
+      - name: Install composer dependencies
+        uses: ramsey/composer-install@v3
 
-    #  - name: Run php-cs-fixer
-    #    run: vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --allow-risky=yes --dry-run -vvv
-    #    env:
-    #      PHP_CS_FIXER_IGNORE_ENV: true
+      - name: Run php-cs-fixer
+        run: vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --allow-risky=yes --dry-run -vvv
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: true
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -35,7 +35,7 @@ jobs:
       - name: Run ESLint
         run: bun run lint
 
- phpstan:
+  phpstan:
     name: "Run static analysis: PHPStan"
     runs-on: ubuntu-latest
     steps:
@@ -53,21 +53,21 @@ jobs:
       - name: Run PHPStan
         run: vendor/bin/phpstan --error-format=github
 
-#  rector:
-#    name: "Run static analysis: Rector"
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - uses: actions/checkout@v4
-#
-#      - name: Setup PHP
-#        uses: shivammathur/setup-php@v2
-#        with:
-#          php-version: 8.4
-#          coverage: none
-#
-#      - name: Install composer dependencies
-#        uses: ramsey/composer-install@v3
-#
-#      - name: Run Rector
-#        run: vendor/bin/rector process --no-ansi --dry-run --no-progress-bar
+  rector:
+    name: "Run static analysis: Rector"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          coverage: none
+
+      - name: Install composer dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Run Rector
+        run: vendor/bin/rector process --no-ansi --dry-run --no-progress-bar
