@@ -1,3 +1,5 @@
+* text=auto eol=lf
+
 # Exclude build/test files from the release
 /bin/                     export-ignore
 .github/                  export-ignore
