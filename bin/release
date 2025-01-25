@@ -19,7 +19,12 @@ function ensureAccess(string $remote, string $branch): void
         throw new Exception('Repository must be in a clean state to release.');
     }
 
-    if (! str_starts_with(shell_exec('git rev-parse --abbrev-ref --symbolic-full-name @{u}'), "{$remote}/{$branch}")) {
+    $output = shell_exec('git rev-parse --abbrev-ref --symbolic-full-name @{u}');
+    if (! is_string($output)) {
+        throw new Exception('Unable to determine remote branch.');
+    }
+
+    if (! str_starts_with($output, "{$remote}/{$branch}")) {
         throw new Exception("You must be on the {$remote}/{$branch} branch to release.");
     }
 }
