@@ -22,7 +22,7 @@ $template = sprintf(<<<'HTML'
 </%s>
 HTML, $is, $attributeString, $content, $is);
 
-$html = get(TempestViewRenderer::class)->render(view($template, ...$this->data));
+$html = get(TempestViewRenderer::class)->render(view($template, ...array_merge($scopedVariables ?? [], $this->data)));
 ?>
 
 {!! $html !!}

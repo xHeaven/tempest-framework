@@ -39,11 +39,16 @@ final class PhpForeachElement implements Element, WrapsElement
     public function compile(): string
     {
         $foreachAttribute = $this->wrappingElement->consumeAttribute(':foreach');
+        $name = trim(str($foreachAttribute)->explode('as')->last());
 
         if ($viewComponent = $this->unwrap(ViewComponentElement::class)) {
-            $name = trim(str($foreachAttribute)->explode('as')->last());
-
             $viewComponent->addVariable($name);
+        } else {
+            $viewComponents = $this->wrappingElement->findDescendants(ViewComponentElement::class);
+
+            foreach ($viewComponents as $viewComponent) {
+                $viewComponent->addVariable($name);
+            }
         }
 
         $compiled = sprintf(

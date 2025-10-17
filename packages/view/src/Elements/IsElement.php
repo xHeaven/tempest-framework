@@ -170,4 +170,26 @@ trait IsElement
 
         return null;
     }
+
+    /**
+     * Recursively find all descendant elements of a specific type
+     *
+     * @template T of \Tempest\View\Element
+     * @param class-string<T> $elementClass
+     * @return array<T>
+     */
+    public function findDescendants(string $elementClass): array
+    {
+        $found = [];
+
+        foreach ($this->getChildren() as $child) {
+            if ($child instanceof $elementClass) {
+                $found[] = $child;
+            }
+
+            $found = [...$found, ...$child->findDescendants($elementClass)];
+        }
+
+        return $found;
+    }
 }
